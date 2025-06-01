@@ -1,0 +1,37 @@
+@use '../main' as *;
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 70px;
+    background: rgba(42, 42, 42, 0.8);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    .profileButton {
+        background: var(--accent);
+        font-size: 32px;
+        padding: 12px 48px;
+        border-radius: 40px;
+        transition: all 0.3s;
+
+        &:hover {
+            background: var(--hover);
+        }
+    }
+}
+
+.topInfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url(../../../../public/index-background.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 1080px;
+}

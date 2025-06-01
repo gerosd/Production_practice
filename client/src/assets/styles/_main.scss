@@ -1,0 +1,28 @@
+:root {
+    --black: #2B2B2B;
+    --accent: #0BB697;
+    --hover: #008d83;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    letter-spacing: 0.05em;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+p, h1, h2, h3, span, input, input::placeholder, a {
+    color: white;
+}

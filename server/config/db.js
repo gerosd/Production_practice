@@ -1,16 +1,21 @@
-import { Sequelize } from 'sequelize';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import path from 'path';
+import {fileURLToPath} from "url";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const sequelize = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_HOST,
-        dialect: 'postgres',
-    }
-);
+const envConfig = dotenv.config({
+    path: path.resolve(__dirname, '../db.env'),
+});
 
-export default sequelize;
+const pool = new Pool({
+    user: "postgres",
+    password: envConfig.parsed.DB_PASSWORD,
+    host: envConfig.parsed.DB_HOST,
+    port: parseInt(envConfig.parsed.DB_PORT, 10),
+    database: envConfig.parsed.DB_NAME,
+});
+
+export default pool;

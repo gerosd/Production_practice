@@ -4,6 +4,8 @@ import userController from "../controllers/user.controller.js";
 const router = new Router();
 
 router.post('/user', userController.createUser);
+router.post('/user/login', userController.loginUser);
+router.get('/user/me', userController.getCurrentUser);
 router.get('/user', userController.getUsers);
 router.get('/user/:id', userController.getOneUser);
 router.put('/user', userController.updateUser);

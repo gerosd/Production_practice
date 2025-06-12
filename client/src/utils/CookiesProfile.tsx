@@ -7,12 +7,13 @@ export const getProfileCookie = (): number | null => {
     for (const cookie of cookies) {
         const [name, value] = cookie.trim().split('=');
         if (name === 'profileId') {
-            return decodeURIComponent(value);
+            const decodedValue = decodeURIComponent(value);
+            return parseInt(decodedValue, 10);
         }
     }
     return null;
 }
 
 export const deleteProfileCookie = (): void => {
-    document.cookie = 'profileId=; max-age=-123 path=/;';
+    document.cookie = 'profileId=; max-age=0; path=/;';
 };

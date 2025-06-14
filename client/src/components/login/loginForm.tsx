@@ -63,7 +63,7 @@ function LoginForm({styles}: LoginFormProps): ReactElement {
                 <h1>Войти</h1>
                 <input type="text" placeholder="Имя пользователя" name="username" value={formData.username} onChange={handleInputChange}/>
                 <input type="password" placeholder="Пароль" name="password" value={formData.password} onChange={handleInputChange}/>
-                <button type="submit" disabled={isLoading}>{isLoading ? 'Загрузка...' : 'Войти'}</button>
+                <button className={isLoading ? styles.loading : ''}  type="submit" disabled={isLoading}>{isLoading ? 'Загрузка...' : 'Войти'}</button>
             </form>
         </div>
     )

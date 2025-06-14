@@ -4,17 +4,51 @@ import jwt from "jsonwebtoken";
 
 class UserController {
     async createUser(req, res) {
-        const { username, password_hash, SNL, phone_number, email } = req.body;
-        const hashedPassword = await bcrypt.hash(password_hash, 10);
-        const newPerson = await pool.query(`INSERT INTO users (username, password_hash, "SNL", phone_number, email) values ($1, $2, $3, $4, $5) RETURNING *`,
-            [username, hashedPassword, SNL, phone_number, email]);
-        res.json(newPerson.rows[0]);
+        try {
+            const { username, password, SNL, phone, email } = req.body;
+
+            if (!username || !password || !SNL || !phone || !email) {
+                return res.status(400).send({ message: "Все поля обязательны для заполнения"})
+            }
+
+            if (password.length <= 8) {
+                return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" })
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            const newPerson = await pool.query(`INSERT INTO users (username, password_hash, "SNL", phone_number, email) values ($1, $2, $3, $4, $5) RETURNING *`,
+                [username, hashedPassword, SNL, phone, email]);
+
+            const {password_hash, ...userData} = newPerson.rows[0];
+
+            res.json(userData);
+        } catch (error) {
+            console.error("Ошибка входа: ", error);
+
+            if (error.code === '23505') {
+                return res.status(409).json({ message: 'Пользователь с таким именем или email уже существует' });
+            }
+
+            res.status(500).json({
+                message: 'Ошибка сервера при попытке регистрации',
+                error: error.message
+            })
+        }
     }
 
     async loginUser(req, res) {
         const { username, password } = req.body;
 
         try {
+            if (!username || !password) {
+                return res.status(400).json({ message: "Все поля обязательны!" })
+            }
+
+            if (password.length <= 8) {
+                return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" })
+            }
+
             const user = await pool.query(`SELECT * FROM users WHERE username = $1`, [username]);
 
             if (user.rows.length === 0) {
@@ -32,12 +66,12 @@ class UserController {
 
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: true,
+                secure: process.env.NODE_ENV === 'production',
                 sameSite: 'strict',
                 maxAge: 604800000,
             });
 
-            const { password_hash, ...userData } = foundUser; // Теперь конфликта нет
+            const { password_hash, ...userData } = foundUser;
             res.json(userData);
 
         } catch (error) {
@@ -47,32 +81,90 @@ class UserController {
     }
 
     async getUsers(req, res) {
-        const users = await pool.query(`SELECT * FROM users`);
-        res.json(users.rows);
+        try {
+            const users = await pool.query(`SELECT * FROM users`);
+            res.json(users.rows);
+        } catch (error) {
+            console.error('Ошибка получения пользователей: ', error);
+            res.status(500).json({ message: 'Ошибка сервера' });
+        }
     }
 
     async getCurrentUser(req, res) {
-        const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [req.userId]);
-        res.json(user.rows[0]);
+        try {
+            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email, created_at FROM users WHERE id = $1`, [req.userId]);
+
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: 'Пользователь не найден' });
+            }
+
+            res.json(user.rows[0]);
+        } catch (error) {
+            console.error('Ошибка получения текущего пользователя: ', error);
+            res.status(500).json({ message: 'Ошибка сервера' });
+        }
     }
 
     async getOneUser(req, res) {
-        const id = req.params.id;
-        const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
-        res.json(user.rows[0]);
+        try {
+            const id = req.params.id;
+            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email, created_at FROM users WHERE id = $1`, [id]);
+
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: 'Пользователь не найден' });
+            }
+
+            res.json(user.rows[0]);
+        } catch (error) {
+            console.error('Ошибка получения пользователя: ', error);
+            res.status(500).json({ message: 'Ошибка сервера' });
+        }
     }
 
     async updateUser(req, res) {
-        const {id, username, password_hash, SNL, phone_number, email} = req.body;
-        const user = await pool.query(`UPDATE users set username = $1, password_hash = $2, "SNL" = $3, phone_number = $4, email = $5 WHERE id = $6`,
-            [username, password_hash, SNL, phone_number, email, id]);
-        res.json(user.rows[0]);
+        try {
+            const {id, username, password, SNL, phone_number, email} = req.body;
+
+            let hashedPassword = null;
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
+
+            const updateQuery = hashedPassword
+                ? `UPDATE users set username = $1, password_hash = $2, "SNL" = $3, phone_number = $4, email = $5 WHERE id = $6 RETURNING id, username, "SNL", phone_number, email`
+                : `UPDATE users set username = $1, "SNL" = $2, phone_number = $3, email = $4 WHERE id = $5 RETURNING id, username, "SNL", phone_number, email`;
+
+            const params = hashedPassword
+                ? [username, hashedPassword, SNL, phone_number, email, id]
+                : [username, SNL, phone_number, email, id];
+
+            const user = await pool.query(updateQuery, params);
+
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: "Пользователь не найден" });
+            }
+
+            res.json(user.rows[0]);
+        } catch (error) {
+            console.error('Ошибка обновления пользователя: ', error);
+            res.status(500).json({ message: 'Ошибка сервера' });
+        }
     }
 
     async deleteUser(req, res) {
-        const id = req.params.id;
-        const user = await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
-        res.json(user.rows[0]);
+        try {
+            const id = req.params.id;
+            const user = await pool.query(`DELETE FROM users WHERE id = $1 RETURNING id`, [id]);
+
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: 'Пользователь не найден' });
+            }
+
+            res.json({ message: 'Пользователь удален', id: user.rows[0].id });
+        } catch (error) {
+            console.error("Ошибка удаления пользователя", error);
+            res.status(500).json({ message: "Ошибка сервера" });
+        }
     }
 }
 

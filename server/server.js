@@ -10,7 +10,7 @@ const app = express();
 app.use(helmet());
 
 const limiter = rateLimit({
-    windowMs: 30 * 1000,
+    windowMs: 30 * 100,
     message: "Requests are too frequent"
 });
 app.use(limiter);

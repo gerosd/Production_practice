@@ -1,4 +1,5 @@
 import {type ChangeEvent, type FormEvent, type ReactElement, useState} from "react";
+import {type NavigateFunction, useNavigate} from "react-router-dom";
 
 interface LoginFormProps {
     styles: Record<string, string>;
@@ -16,13 +17,15 @@ function LoginForm({styles}: LoginFormProps): ReactElement {
     });
     const [isLoading, setIsLoading] = useState(false);
 
+    const navigate: NavigateFunction = useNavigate();
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value,
         }))
-    }
+    };
 
     const signIn = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -49,7 +52,7 @@ function LoginForm({styles}: LoginFormProps): ReactElement {
 
             const data = await response.json();
             console.log('Успешный вход: ', data);
-
+            navigate("/profile");
         } catch (err) {
             console.error('Ошибка входа: ', err);
         } finally {

@@ -4,6 +4,17 @@ import bodyParser from 'body-parser';
 import router from './routes/user.routes.js';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import dotenv from 'dotenv';
+import {fileURLToPath} from "url";
+import path from 'path';
+import cookieParser from 'cookie-parser';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({
+    path: path.resolve(__dirname, '.env'),
+});
 
 const app = express();
 
@@ -23,6 +34,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 }
 
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 

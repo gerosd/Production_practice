@@ -8,11 +8,11 @@ class UserController {
             const { username, password, SNL, phone, email } = req.body;
 
             if (!username || !password || !SNL || !phone || !email) {
-                return res.status(400).send({ message: "Все поля обязательны для заполнения"})
+                return res.status(400).send({ message: "Все поля обязательны для заполнения"});
             }
 
-            if (password.length <= 8) {
-                return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" })
+            if (password.length < 8) {
+                return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" });
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -45,7 +45,7 @@ class UserController {
                 return res.status(400).json({ message: "Все поля обязательны!" })
             }
 
-            if (password.length <= 8) {
+            if (password.length < 8) {
                 return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" })
             }
 
@@ -92,7 +92,7 @@ class UserController {
 
     async getCurrentUser(req, res) {
         try {
-            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email, created_at FROM users WHERE id = $1`, [req.userId]);
+            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email FROM users WHERE id = $1`, [req.userId]);
 
             if (user.rows.length === 0) {
                 return res.status(404).json({ message: 'Пользователь не найден' });
@@ -108,7 +108,14 @@ class UserController {
     async getOneUser(req, res) {
         try {
             const id = req.params.id;
-            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email, created_at FROM users WHERE id = $1`, [id]);
+
+            if (!id || isNaN(parseInt(id)) || parseInt(id) <= 0) {
+                return res.status(400).json({
+                    message: 'Некорректный ID пользователя. ID должен быть положительным числом'
+                });
+            }
+
+            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email FROM users WHERE id = $1`, [id]);
 
             if (user.rows.length === 0) {
                 return res.status(404).json({ message: 'Пользователь не найден' });
@@ -164,6 +171,18 @@ class UserController {
         } catch (error) {
             console.error("Ошибка удаления пользователя", error);
             res.status(500).json({ message: "Ошибка сервера" });
+        }
+    }
+
+    async getTokenCookie(req, res) {
+        const token = req.cookies.token;
+        if (!token) return res.json({ isAuthenticated: false });
+
+        try {
+            jwt.verify(token, process.env.JWT_SECRET);
+            res.json({ isAuthenticated: true });
+        } catch (error) {
+            res.json({ isAuthenticated: false });
         }
     }
 }

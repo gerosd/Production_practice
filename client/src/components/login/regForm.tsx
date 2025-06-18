@@ -1,4 +1,5 @@
 import {type ChangeEvent, type FormEvent, type ReactElement, useState} from 'react';
+import {type NavigateFunction, useNavigate} from "react-router-dom";
 
 interface RegFormProps {
     styles: Record<string, string>;
@@ -22,6 +23,8 @@ function RegForm( {styles}: RegFormProps ): ReactElement {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const navigate: NavigateFunction = useNavigate();
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
@@ -56,6 +59,8 @@ function RegForm( {styles}: RegFormProps ): ReactElement {
                 alert(error.message);
                 throw new Error(error.message || 'Something went wrong');
             }
+
+            navigate('/profile');
         } catch (err) {
             console.error("Ошибка регистрации", err);
         } finally {

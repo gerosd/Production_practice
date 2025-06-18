@@ -17,12 +17,24 @@ class UserController {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const newPerson = await pool.query(`INSERT INTO users (username, password_hash, "SNL", phone_number, email) values ($1, $2, $3, $4, $5) RETURNING *`,
+            const newPerson = await pool.query(`INSERT INTO users (username, password_hash, "SNL", phone_number, email, role) values ($1, $2, $3, $4, $5, 'user') RETURNING *`,
                 [username, hashedPassword, SNL, phone, email]);
 
             const {password_hash, ...userData} = newPerson.rows[0];
 
-            res.json(userData);
+            const token = jwt.sign({ userId: userData.id }, process.env.JWT_SECRET, { expiresIn: '7d'});
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 604800000,
+            });
+
+            res.json({
+                ...userData,
+                message: 'Пользователь успешно зарегистрирован и авторизован'
+            });
         } catch (error) {
             console.error("Ошибка входа: ", error);
 
@@ -134,6 +146,9 @@ class UserController {
 
             let hashedPassword = null;
             if (password) {
+                if (password.length < 8) {
+                    return res.status(400).json({ message: "Длина пароля должна быть больше 7 символов" });
+                }
                 hashedPassword = await bcrypt.hash(password, 10);
             }
 
@@ -154,6 +169,11 @@ class UserController {
             res.json(user.rows[0]);
         } catch (error) {
             console.error('Ошибка обновления пользователя: ', error);
+
+            if (error.code === '23505') {
+                return res.status(409).json({ message: 'Пользователь с таким именем или email уже существует' });
+            }
+
             res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
@@ -183,6 +203,19 @@ class UserController {
             res.json({ isAuthenticated: true });
         } catch (error) {
             res.json({ isAuthenticated: false });
+        }
+    }
+
+    async deleteTokenCookie(req, res) {
+        try {
+            res.clearCookie('token', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+            });
+            res.json({ isAuthenticated: false });
+        } catch (error) {
+            res.json({ isAuthenticated: true });
         }
     }
 }

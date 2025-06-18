@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import router from './routes/user.routes.js';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+// import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import {fileURLToPath} from "url";
 import path from 'path';
@@ -20,11 +20,11 @@ const app = express();
 
 app.use(helmet());
 
-const limiter = rateLimit({
-    windowMs: 30 * 100,
-    message: "Requests are too frequent"
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//     windowMs: 30 * 100,
+//     message: "Requests are too frequent"
+// });
+// app.use(limiter);
 
 const corsOptions = {
     origin: [

@@ -1,5 +1,30 @@
 @use '../main' as *;
 
 .profileMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    background: $black;
 
+    .profileData {
+        width: 800px;
+        text-align: center;
+
+        .profileInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: $accent;
+
+            p {
+                font-size: 22px;
+                font-weight: 600;
+
+                span {
+                    font-weight: 400;
+                }
+            }
+        }
+    }
 }

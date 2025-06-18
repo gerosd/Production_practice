@@ -1,18 +1,22 @@
 import { Router } from 'express';
 import userController from "../controllers/user.controller.js";
+import {authenticateToken, requireAdmin} from "../middleware/auth.js";
 
 const router = new Router();
 
+//public routes
 router.post('/user/register', userController.createUser);
 router.post('/user/login', userController.loginUser);
-
-router.get('/user/me', userController.getCurrentUser);
-router.get('/users', userController.getUsers);
-router.get('/user/:id', userController.getOneUser);
 router.get('/check_auth', userController.getTokenCookie);
+router.delete('/logout', userController.deleteTokenCookie);
 
-router.put('/user', userController.updateUser);
+//private routes
+router.get('/user/me', authenticateToken, userController.getCurrentUser);
 
-router.delete('/user/:id', userController.deleteUser);
+//admin routes
+router.get('/users', requireAdmin, userController.getUsers);
+router.get('/user/:id', requireAdmin, userController.getOneUser);
+router.put('/user', requireAdmin, userController.updateUser);
+router.delete('/user/:id', requireAdmin, userController.deleteUser);
 
 export default router;

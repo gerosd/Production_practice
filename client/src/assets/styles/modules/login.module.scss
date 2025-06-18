@@ -19,7 +19,7 @@
     width: 100%;
     height: 100vh;
     background-image: url("/login-bg.png");
-    background-color: var(--black);
+    background-color: $black;
     background-repeat: no-repeat;
     background-size: cover;
     user-select: none;
@@ -46,7 +46,7 @@
     }
 
     .container {
-        background-color: var(--black);
+        background-color: $black;
         border-radius: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         position: relative;
@@ -129,19 +129,19 @@
             border-radius: 8px;
             width: 100%;
             outline: none;
-            color: var(--black);
+            color: $black;
 
             &::placeholder {
-                color: var(--black);
+                color: $black;
             }
         }
     }
 
     button {
-        background: var(--accent);
+        background: $accent;
         font-size: 16px;
         outline: none;
-        border: 1px solid var(--accent);
+        border: 1px solid $accent;
         color: #fff;
         padding: 10px 45px;
         border-radius: 10px;
@@ -149,8 +149,8 @@
         transition: 0.3s ease;
 
         &:hover {
-            background: var(--hover);
-            border: 1px solid var(--hover);
+            background: $hover;
+            border: 1px solid $hover;
         }
 
         &.hidden {

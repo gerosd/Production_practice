@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import {logger} from '../logs/logger.js';
 
 class UserController {
     async createUser(req, res) {
@@ -31,12 +32,14 @@ class UserController {
                 maxAge: 604800000,
             });
 
+            logger.info(`Create a new user - ${username}`)
+
             res.json({
                 ...userData,
                 message: 'Пользователь успешно зарегистрирован и авторизован'
             });
         } catch (error) {
-            console.error("Ошибка входа: ", error);
+            logger.error("Ошибка входа: ", error);
 
             if (error.code === '23505') {
                 return res.status(409).json({ message: 'Пользователь с таким именем или email уже существует' });
@@ -71,7 +74,8 @@ class UserController {
 
             const isPasswordValid = await bcrypt.compare(password, foundUser.password_hash);
             if (!isPasswordValid) {
-                return res.status(401).json({ message: 'Неверное имя пользователя или пароль' })
+                logger.warn(`Failed login attempt - user "${username}"`);
+                return res.status(401).json({ message: 'Неверное имя пользователя или пароль' });
             }
 
             const token = jwt.sign({ userId: foundUser.id }, process.env.JWT_SECRET, { expiresIn: '7d'});
@@ -87,7 +91,7 @@ class UserController {
             res.json(userData);
 
         } catch (error) {
-            console.error('Ошибка входа: ', error);
+            logger.error('Ошибка входа: ', error);
             res.status(500).json({ message: 'Ошибка сервера при попытке входа' })
         }
     }
@@ -95,9 +99,12 @@ class UserController {
     async getUsers(req, res) {
         try {
             const users = await pool.query(`SELECT * FROM users`);
+
+            logger.info("Request for all users");
+
             res.json(users.rows);
         } catch (error) {
-            console.error('Ошибка получения пользователей: ', error);
+            logger.error('Ошибка получения пользователей: ', error);
             res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
@@ -112,7 +119,7 @@ class UserController {
 
             res.json(user.rows[0]);
         } catch (error) {
-            console.error('Ошибка получения текущего пользователя: ', error);
+            logger.error('Ошибка получения текущего пользователя: ', error);
             res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
@@ -133,9 +140,11 @@ class UserController {
                 return res.status(404).json({ message: 'Пользователь не найден' });
             }
 
+            logger.info(`Check user with ${id} id`);
+
             res.json(user.rows[0]);
         } catch (error) {
-            console.error('Ошибка получения пользователя: ', error);
+            logger.error('Ошибка получения пользователя: ', error);
             res.status(500).json({ message: 'Ошибка сервера' });
         }
     }
@@ -166,9 +175,11 @@ class UserController {
                 return res.status(404).json({ message: "Пользователь не найден" });
             }
 
+            logger.info(`User ${id} data update.`)
+
             res.json(user.rows[0]);
         } catch (error) {
-            console.error('Ошибка обновления пользователя: ', error);
+            logger.error('Ошибка обновления пользователя: ', error);
 
             if (error.code === '23505') {
                 return res.status(409).json({ message: 'Пользователь с таким именем или email уже существует' });
@@ -187,9 +198,11 @@ class UserController {
                 return res.status(404).json({ message: 'Пользователь не найден' });
             }
 
+            logger.info(`User ${id} has been deleted`);
+
             res.json({ message: 'Пользователь удален', id: user.rows[0].id });
         } catch (error) {
-            console.error("Ошибка удаления пользователя", error);
+            logger.error("Ошибка удаления пользователя", error);
             res.status(500).json({ message: "Ошибка сервера" });
         }
     }
@@ -202,6 +215,7 @@ class UserController {
             jwt.verify(token, process.env.JWT_SECRET);
             res.json({ isAuthenticated: true });
         } catch (error) {
+            logger.error(error);
             res.json({ isAuthenticated: false });
         }
     }
@@ -215,6 +229,7 @@ class UserController {
             });
             res.json({ isAuthenticated: false });
         } catch (error) {
+            logger.error(error);
             res.json({ isAuthenticated: true });
         }
     }

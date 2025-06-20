@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import pool from "../config/db.js";
+import {logger} from "../logs/logger.js";
 
 export const authenticateToken = (req, res, next) => {
     const token = req.cookies.token;
@@ -13,7 +14,7 @@ export const authenticateToken = (req, res, next) => {
         req.userId = decoded.userId;
         next();
     } catch (error) {
-        console.error('Ошибка проверки токена:', error);
+        logger.error('Ошибка проверки токена:', error);
         return res.status(403).json({ message: 'Недействительный токен' })
     }
 }
@@ -41,7 +42,7 @@ export const requireAdmin = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.error('Ошибка проверки прав администратора:', error);
+        logger.error('Ошибка проверки прав администратора:', error);
         if (error.name === 'JsonWebTokenError') {
             return res.status(403).json({ message: 'Недействительный токен' });
         }

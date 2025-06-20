@@ -27,34 +27,39 @@ p, h1, h2, h3, span, input, input::placeholder, a, button {
 }
 
 header {
+    height: 90px;
+    padding: 0 60px;
+    background: rgba(42, 42, 42, 0.8);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 70px;
-    background: rgba(42, 42, 42, 0.8);
-    outline: 2px solid white;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 20;
 
-    .profileButton {
-        background: $accent;
-        font-size: 32px;
-        padding: 12px 48px;
-        border-radius: 40px;
-        transition: all 0.3s;
-        outline: none;
-        border: none;
+    img {
+        height: 40px;
         cursor: pointer;
+        transition: opacity 0.2s;
 
         &:hover {
-            background: $hover;
+            opacity: 0.8;
         }
     }
 
-    img {
+    .profileButton {
+        padding: 10px 24px;
+        border-radius: 6px;
+        background: $accent;
+        color: white;
+        border: none;
+        font-size: 20px;
+        font-weight: 500;
         cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: $hover;
+            transform: translateY(-2px);
+        }
     }
 }

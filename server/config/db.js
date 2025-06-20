@@ -11,7 +11,7 @@ const envConfig = dotenv.config({
 });
 
 const pool = new Pool({
-    user: "postgres",
+    user: "postgres.gnkrtyzgrpmdudjqhhqg",
     password: envConfig.parsed.DB_PASSWORD,
     host: envConfig.parsed.DB_HOST,
     port: parseInt(envConfig.parsed.DB_PORT, 10),

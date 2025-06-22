@@ -1,10 +1,11 @@
 {
-  "name": "Production_practice",
+  "name": "production_practice",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "server/server.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node server/server.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",

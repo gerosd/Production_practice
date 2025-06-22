@@ -27,7 +27,7 @@ function Profile(): ReactElement {
 
     const handleLogOut = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/logout', {
+            const response = await fetch('https://server-mu3u.onrender.com/api/logout', {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -47,7 +47,7 @@ function Profile(): ReactElement {
     useEffect(() => {
         const getCurrentProfileInfo = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/user/me', {
+                const response = await fetch('https://server-mu3u.onrender.com/api/user/me', {
                     method: 'GET',
                     credentials: 'include'
                 });

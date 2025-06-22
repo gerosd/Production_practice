@@ -19,7 +19,7 @@ function adminPanel(): ReactElement {
     useEffect((): void => {
         const getAllUsersData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/users', {
+                const response = await fetch('https://server-mu3u.onrender.com/api/users', {
                     method: "GET",
                     credentials: 'include'
                 });

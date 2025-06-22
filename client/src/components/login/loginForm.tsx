@@ -32,7 +32,7 @@ function LoginForm({styles}: LoginFormProps): ReactElement {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/user/login', {
+            const response = await fetch('https://server-mu3u.onrender.com/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',

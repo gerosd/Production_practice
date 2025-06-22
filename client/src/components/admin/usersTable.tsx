@@ -36,7 +36,7 @@ function UsersTable({styles, usersData}: TableProps): ReactElement {
     const updateUserData = async (user: UserData) => {
         try {
             setIsUpdateLoading(true);
-            const response = await fetch("http://localhost:5000/api/user/", {
+            const response = await fetch("https://server-mu3u.onrender.com/api/user/", {
                 method: "PUT",
                 credentials: "include",
                 headers: {
@@ -72,7 +72,7 @@ function UsersTable({styles, usersData}: TableProps): ReactElement {
                     return;
                 }
                 setIsDeleteLoading(true);
-                const response = await fetch("http://localhost:5000/api/user/", {
+                const response = await fetch("https://server-mu3u.onrender.com/api/user/", {
                     method: "DELETE",
                     credentials: "include",
                     headers: {

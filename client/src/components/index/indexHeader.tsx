@@ -12,7 +12,7 @@ function IndexHeader({styles}: IndexHeaderProps): ReactElement {
     useEffect((): void => {
         const checkAuth = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/check_auth', {
+                const response = await fetch('https://server-mu3u.onrender.com/api/check_auth', {
                     method: 'GET',
                     credentials: 'include'
                 });

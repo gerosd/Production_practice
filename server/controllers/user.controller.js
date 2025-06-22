@@ -124,34 +124,9 @@ class UserController {
         }
     }
 
-    async getOneUser(req, res) {
-        try {
-            const id = req.params.id;
-
-            if (!id || isNaN(parseInt(id)) || parseInt(id) <= 0) {
-                return res.status(400).json({
-                    message: 'Некорректный ID пользователя. ID должен быть положительным числом'
-                });
-            }
-
-            const user = await pool.query(`SELECT id, username, "SNL", phone_number, email FROM users WHERE id = $1`, [id]);
-
-            if (user.rows.length === 0) {
-                return res.status(404).json({ message: 'Пользователь не найден' });
-            }
-
-            logger.info(`Check user with ${id} id`);
-
-            res.json(user.rows[0]);
-        } catch (error) {
-            logger.error('Ошибка получения пользователя: ', error);
-            res.status(500).json({ message: 'Ошибка сервера' });
-        }
-    }
-
     async updateUser(req, res) {
         try {
-            const {id, username, password, SNL, phone_number, email} = req.body;
+            const {id, username, password, SNL, phone_number, email, role} = req.body;
 
             let hashedPassword = null;
             if (password) {
@@ -162,12 +137,12 @@ class UserController {
             }
 
             const updateQuery = hashedPassword
-                ? `UPDATE users set username = $1, password_hash = $2, "SNL" = $3, phone_number = $4, email = $5 WHERE id = $6 RETURNING id, username, "SNL", phone_number, email`
-                : `UPDATE users set username = $1, "SNL" = $2, phone_number = $3, email = $4 WHERE id = $5 RETURNING id, username, "SNL", phone_number, email`;
+                ? `UPDATE users set username = $1, password_hash = $2, "SNL" = $3, phone_number = $4, email = $5, role = $6 WHERE id = $7 RETURNING id, username, "SNL", phone_number, email, role`
+                : `UPDATE users set username = $1, "SNL" = $2, phone_number = $3, email = $4, role = $5 WHERE id = $6 RETURNING id, username, "SNL", phone_number, email, role`;
 
             const params = hashedPassword
-                ? [username, hashedPassword, SNL, phone_number, email, id]
-                : [username, SNL, phone_number, email, id];
+                ? [username, hashedPassword, SNL, phone_number, email, role, id]
+                : [username, SNL, phone_number, email, role, id];
 
             const user = await pool.query(updateQuery, params);
 
@@ -175,7 +150,7 @@ class UserController {
                 return res.status(404).json({ message: "Пользователь не найден" });
             }
 
-            logger.info(`User ${id} data update.`)
+            logger.info(`User ${id} data update: ${JSON.stringify(req.body)}`);
 
             res.json(user.rows[0]);
         } catch (error) {

@@ -1,5 +1,8 @@
 import styles from '../assets/styles/modules/admin.module.scss';
-import {useEffect, useState} from "react";
+import {type ReactElement, useEffect, useState} from "react";
+import Header from "../components/shared/Header.tsx";
+import {Link} from "react-router-dom";
+import UsersTable from "../components/admin/usersTable.tsx";
 
 interface UserData {
     id: number;
@@ -7,9 +10,10 @@ interface UserData {
     SNL: string;
     phone_number: string;
     email: string;
+    role: string;
 }
 
-function adminPanel() {
+function adminPanel(): ReactElement {
     const [allUsers, setAllUsers] = useState<UserData[]>([]);
 
     useEffect((): void => {
@@ -29,9 +33,14 @@ function adminPanel() {
     }, []);
 
     return (
-        <div className={styles.adminPanel}>
-            
-        </div>
+        <>
+            <Header rightElement={
+                <Link to="/profile">Профиль</Link>
+            }/>
+            <main className={styles.adminPanel}>
+                <UsersTable styles={styles} usersData={allUsers}/>
+            </main>
+        </>
     )
 }
 

@@ -1,7 +1,6 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './assets/styles/_main.scss';
 import Index from "./pages";
 import LoginPage from "./pages/login";
 import Profile from "./pages/profile";

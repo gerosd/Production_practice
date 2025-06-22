@@ -10,56 +10,10 @@ $hover: #008d83;
     letter-spacing: 0.05em;
 }
 
-#root {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
-    background-color: $black;
-}
-
 a {
     text-decoration: none;
 }
 
-p, h1, h2, h3, span, input, input::placeholder, a, button {
+p, h1, h2, h3, span, input, input::placeholder, a, button, th, td {
     color: white;
-}
-
-header {
-    height: 90px;
-    padding: 0 60px;
-    background: rgba(42, 42, 42, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    z-index: 20;
-
-    img {
-        height: 40px;
-        cursor: pointer;
-        transition: opacity 0.2s;
-
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-
-    .profileButton {
-        padding: 10px 24px;
-        border-radius: 6px;
-        background: $accent;
-        color: white;
-        border: none;
-        font-size: 20px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &:hover {
-            background: $hover;
-            transform: translateY(-2px);
-        }
-    }
 }

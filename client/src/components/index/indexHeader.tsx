@@ -1,6 +1,6 @@
 import {type ReactElement, useEffect, useState} from "react";
-import logo from '/header-logo.png';
-import {Link, type NavigateFunction, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
+import Header from "../shared/Header.tsx";
 
 interface IndexHeaderProps {
     styles: Record<string, string>;
@@ -8,12 +8,6 @@ interface IndexHeaderProps {
 
 function IndexHeader({styles}: IndexHeaderProps): ReactElement {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    const navigate: NavigateFunction = useNavigate();
-
-    const handleNavToMain = (): void => {
-        navigate('/');
-    }
 
     useEffect((): void => {
         const checkAuth = async () => {
@@ -33,13 +27,11 @@ function IndexHeader({styles}: IndexHeaderProps): ReactElement {
     }, []);
 
     return (
-        <header>
-            <img src={logo} alt="Logo" onClick={handleNavToMain}/>
-            {!isAuthenticated ?
+        <Header rightElement={
+            !isAuthenticated ?
                 <Link to="/login" className={styles.profileButton}>Логин</Link>
                 : <Link to="/profile" className={styles.profileButton}>Профиль</Link>
-            }
-        </header>
+        }/>
     )
 }
 

@@ -1,8 +1,8 @@
 import {type ReactElement, useEffect, useState} from "react";
 import styles from '../assets/styles/modules/profile.module.scss';
-import logo from '/header-logo.png';
 import {type NavigateFunction, useNavigate} from "react-router-dom";
 import ProfileData from "../components/profile/profileData.tsx";
+import Header from "../components/shared/Header.tsx";
 
 interface UserData {
     username: string;
@@ -63,10 +63,9 @@ function Profile(): ReactElement {
 
     return (
         <>
-            <header>
-                <img src={logo} alt="logo" onClick={handleNavToMain}/>
-                <button onClick={handleLogOut} className={styles.profileButton}>Выйти</button>
-            </header>
+            <Header rightElement={
+                <a onClick={handleLogOut} className={styles.profileButton}>Выйти</a>
+            }/>
             <main className={styles.profileMain}>
                 <ProfileData styles={styles} data={profileData}/>
             </main>

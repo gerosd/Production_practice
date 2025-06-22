@@ -15,7 +15,6 @@ router.get('/user/me', authenticateToken, userController.getCurrentUser);
 
 //admin routes
 router.get('/users', requireAdmin, userController.getUsers);
-router.get('/user/:id', requireAdmin, userController.getOneUser);
 router.put('/user', requireAdmin, userController.updateUser);
 router.delete('/user/:id', requireAdmin, userController.deleteUser);
 

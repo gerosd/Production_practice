@@ -1,8 +1,8 @@
 import {type ReactElement, useEffect, useState} from "react";
 import styles from '../assets/styles/modules/profile.module.scss';
 import {type NavigateFunction, useNavigate} from "react-router-dom";
-import ProfileData from "../components/profile/profileData.tsx";
-import Header from "../components/shared/Header.tsx";
+import ProfileData from "../components/profile/ProfileData";
+import Header from "../components/shared/Header";
 
 interface UserData {
     username: string;

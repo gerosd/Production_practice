@@ -8,5 +8,10 @@
     "skipLibCheck": true,
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["client/src/**/*"],
+  "exclude": ["**/node_modules", "**/dist"],
+  "references": [
+    { "path": "client/tsconfig.app.json" },
+    { "path": "client/tsconfig.node.json" }
+  ]
 }

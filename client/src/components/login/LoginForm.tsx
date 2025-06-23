@@ -50,8 +50,6 @@ function LoginForm({styles}: LoginFormProps): ReactElement {
                 throw new Error(error.message || 'Something went wrong');
             }
 
-            const data = await response.json();
-            console.log('Успешный вход: ', data);
             navigate("/profile");
         } catch (err) {
             console.error('Ошибка входа: ', err);

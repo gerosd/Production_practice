@@ -1,9 +1,9 @@
 import {type ReactElement, useState} from "react";
 import styles from '../assets/styles/modules/login.module.scss';
-import LoginForm from "../components/login/loginForm.tsx";
-import RegForm from "../components/login/regForm.tsx";
-import ToggleContainer from "../components/login/toggleContainer.tsx";
-import backButton from '/back-button.svg';
+import LoginForm from "../components/login/LoginForm";
+import RegForm from "../components/login/RegForm";
+import ToggleContainer from "../components/login/ToggleContainer";
+import backButton from '../.././public/back-button.svg';
 import {type NavigateFunction, useNavigate} from "react-router-dom";
 
 function LoginPage(): ReactElement {

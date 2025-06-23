@@ -1,12 +1,154 @@
 @use '../main' as *;
 
 .topInfo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: url(/index-background.png);
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 1080px;
+    padding-top: 150px;
+    background-color: #1a1a1a;
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .hero {
+        text-align: center;
+
+
+        h1 {
+            font-size: clamp(20px, 3vw, 46px);
+            color: #ffffff;
+        }
+
+        p {
+            margin-top: 20px;
+            margin-inline: auto;
+            font-size: clamp(16px, 1.6vw, 20px);
+            color: #b3b3b3;
+            max-width: 800px;
+        }
+    }
+
+    .services {
+        margin-top: clamp(20px, 4vw, 60px);
+
+        h2 {
+            text-align: center;
+            font-size: clamp(20px, 3vw, 40px);
+            color: #ffffff;
+        }
+
+        .servicesGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+
+            .serviceCard {
+                display: flex;
+                flex-direction: column;
+                gap: clamp(8px, 1.5vw, 15px);
+                background: #2a2a2a;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                transition: transform 0.3s ease;
+
+                &:hover {
+                    transform: translateY(-5px);
+                    background: #333333;
+                }
+
+                h3 {
+                    font-size: clamp(18px, 2vw, 24px);
+                    color: #ffffff;
+                }
+
+                p {
+                    font-size: clamp(14px, 1.5vw, 16px);
+                    color: #b3b3b3;
+                    line-height: 1.6;
+                }
+            }
+        }
+    }
+
+    .benefits {
+        margin-top: clamp(20px, 4vw, 60px);
+        background-color: #2a2a2a;
+        padding: clamp(20px, 4vw, 60px) 0;
+        border-radius: 15px;
+
+        h2 {
+            text-align: center;
+            font-size: clamp(20px, 3vw, 40px);
+            color: #ffffff;
+            padding-bottom: 10px;
+            border-bottom: 2px solid white;
+        }
+
+        .benefitsGrid {
+            margin-top: clamp(20px, 3vw, 40px);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(10px, 2.3vw, 30px);
+
+            .benefitItem {
+                text-align: center;
+                padding: 20px;
+
+                h3 {
+                    font-size: clamp(16px, 1.8vw, 20px);
+                    color: #ffffff;
+                }
+
+                p {
+                    font-size: clamp(14px, 1.5vw, 16px);
+                    margin-top: 15px;
+                    color: #b3b3b3;
+                }
+            }
+        }
+    }
+
+    .contact {
+        background-color: #1a1a1a;
+        padding: 40px 0 20px 0;
+
+        h2 {
+            text-align: center;
+            font-size: clamp(20px, 3vw, 40px);
+            color: #ffffff;
+        }
+
+        .contactInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+            text-align: center;
+            margin-top: 20px;
+            margin-inline: auto;
+
+            .contactItem {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                h3 {
+                    font-size: clamp(14px, 1.5vw, 20px);
+                    color: #ffffff;
+                }
+
+                p, a {
+                    color: #b3b3b3;
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+
+                    &:hover {
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+    }
 }

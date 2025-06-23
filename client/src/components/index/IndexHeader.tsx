@@ -1,6 +1,6 @@
 import {type ReactElement, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import Header from "../shared/Header.tsx";
+import Header from "../shared/Header";
 
 interface IndexHeaderProps {
     styles: Record<string, string>;

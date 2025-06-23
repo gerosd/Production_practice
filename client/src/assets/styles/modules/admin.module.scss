@@ -5,6 +5,26 @@
     background: #1a1b1e;
     height: 100vh;
 
+    .mobileMessage {
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: $accent;
+        }
+        
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+    }
+
     .usersTable {
         margin-inline: auto;
         border: 2px solid rgba(255, 255, 255, 0.1);
@@ -14,6 +34,11 @@
         border-collapse: separate;
         border-spacing: 0;
         color: white;
+
+        @media (max-width: 1250px) {
+            width: 100%;
+            padding: 0;
+        }
 
         thead {
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);

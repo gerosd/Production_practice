@@ -10,10 +10,10 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="GFM-client/" element={<Index/>}/>
-                <Route path="GFM-client/login" element={<LoginPage/>}/>
-                <Route path="GFM-client/profile" element={<Profile/>}/>
-                <Route path="GFM-client/admin" element={<AdminPanel/>}/>
+                <Route path="/GFM-client/" element={<Index/>}/>
+                <Route path="/GFM-client/login" element={<LoginPage/>}/>
+                <Route path="/GFM-client/profile" element={<Profile/>}/>
+                <Route path="/GFM-client/admin" element={<AdminPanel/>}/>
             </Routes>
         </BrowserRouter>
     </StrictMode>,

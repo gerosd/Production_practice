@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0",
   "type": "module",
-  "proxy": "http://localhost:5000",
+  "proxy": "https://gerosd.github.io/GFM-client/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

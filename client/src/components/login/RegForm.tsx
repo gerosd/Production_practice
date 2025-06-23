@@ -60,7 +60,7 @@ function RegForm( {styles}: RegFormProps ): ReactElement {
                 throw new Error(error.message || 'Something went wrong');
             }
 
-            navigate('/profile');
+            navigate('/GFM-client/profile');
         } catch (err) {
             console.error("Ошибка регистрации", err);
         } finally {

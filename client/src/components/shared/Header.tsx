@@ -39,14 +39,14 @@ function Header({rightElement}: HeaderProps): ReactElement {
     }, []);
 
     const handleNavToMain = (): void => {
-        navigate('/');
+        navigate('/GFM-client/');
     }
 
     return (
         <header className={styles.header}>
             <img onClick={handleNavToMain} src={logo} alt="logo"/>
             <div className={styles.rightElements}>
-                {isAdmin && <Link to="/admin" className={styles.adminLink}>Админ панель</Link>}
+                {isAdmin && <Link to="/GFM-client/admin" className={styles.adminLink}>Админ панель</Link>}
                 {rightElement}
             </div>
         </header>

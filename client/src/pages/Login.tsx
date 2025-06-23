@@ -16,7 +16,7 @@ function LoginPage(): ReactElement {
     }
 
     const handleNavToIndex = (): void => {
-        navigate("/");
+        navigate("/GFM-client/");
     }
 
     return (

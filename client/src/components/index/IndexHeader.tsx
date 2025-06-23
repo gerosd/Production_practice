@@ -29,8 +29,8 @@ function IndexHeader({styles}: IndexHeaderProps): ReactElement {
     return (
         <Header rightElement={
             !isAuthenticated ?
-                <Link to="/login" className={styles.profileButton}>Логин</Link>
-                : <Link to="/profile" className={styles.profileButton}>Профиль</Link>
+                <Link to="/GFM-client/login" className={styles.profileButton}>Логин</Link>
+                : <Link to="/GFM-client/profile" className={styles.profileButton}>Профиль</Link>
         }/>
     )
 }

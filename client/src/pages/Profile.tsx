@@ -22,7 +22,7 @@ function Profile(): ReactElement {
     const navigate: NavigateFunction = useNavigate();
 
     const handleNavToMain = (): void => {
-        navigate('/');
+        navigate('/GFM-client/');
     }
 
     const handleLogOut = async () => {

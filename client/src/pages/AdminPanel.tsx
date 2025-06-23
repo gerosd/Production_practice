@@ -30,7 +30,6 @@ function AdminPanel(): ReactElement {
     const windowWidth = useWindowWidth();
 
     useEffect((): void => {
-        // Only fetch data if screen width is >= 1000px
         if (windowWidth >= 1000) {
             const getAllUsersData = async () => {
                 try {
@@ -46,12 +45,12 @@ function AdminPanel(): ReactElement {
             };
             getAllUsersData();
         }
-    }, [windowWidth]); // Re-run effect when window width changes
+    }, [windowWidth]);
 
     return (
         <>
             <Header rightElement={
-                <Link to="/profile">Профиль</Link>
+                <Link to="/GFM-client/profile">Профиль</Link>
             }/>
             <main className={styles.adminPanel}>
                 {windowWidth < 1000 ? (
